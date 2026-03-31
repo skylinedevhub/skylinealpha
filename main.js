@@ -11,7 +11,7 @@ const vs = `attribute vec2 a; void main(){ gl_Position=vec4(a,0,1); }`;
 const fs = `
 precision highp float;
 uniform vec2 uR;
-uniform float uT, uS, uSc, uBl;
+uniform float uT, uS, uSc, uBl, uOff;
 uniform vec3 uBg;
 
 #define TAU 6.2831853
@@ -80,8 +80,10 @@ vec3 pal(float t) {
 
 void main() {
   vec2 uv = (gl_FragCoord.xy - uR * .5) / min(uR.x, uR.y);
+  vec2 suv = uv;
+  suv.x -= uOff;
   vec3 ro = vec3(0, 0, 2.4);
-  vec3 rd = normalize(vec3(uv, -1.2));
+  vec3 rd = normalize(vec3(suv, -1.2));
 
   float t = 0., hit = 0.;
   for (int i = 0; i < 96; i++) {
@@ -149,6 +151,7 @@ const uTi = gl.getUniformLocation(prog, "uT");
 const uScroll = gl.getUniformLocation(prog, "uS");
 const uScene = gl.getUniformLocation(prog, "uSc");
 const uBlend = gl.getUniformLocation(prog, "uBl");
+const uOff = gl.getUniformLocation(prog, "uOff");
 const uBg = gl.getUniformLocation(prog, "uBg");
 
 let maxScroll = 1;
@@ -293,10 +296,16 @@ const frame = (now) => {
 
   updateHUD(smooth);
 
+  const panDir = [0, 1, -1, 1, -1];
+  const halfW = canvas.width / (2 * Math.min(canvas.width, canvas.height));
+  const dir = panDir[si] + (panDir[Math.min(si + 1, N - 1)] - panDir[si]) * bl;
+  const off = dir * halfW;
+
   gl.uniform1f(uTi, (now - t0) / 1000);
   gl.uniform1f(uScroll, smooth);
   gl.uniform1f(uScene, si);
   gl.uniform1f(uBlend, bl);
+  gl.uniform1f(uOff, off);
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
 
