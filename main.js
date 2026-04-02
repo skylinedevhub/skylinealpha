@@ -151,7 +151,7 @@ const uTi = gl.getUniformLocation(prog, "uT");
 const uScroll = gl.getUniformLocation(prog, "uS");
 const uScene = gl.getUniformLocation(prog, "uSc");
 const uBlend = gl.getUniformLocation(prog, "uBl");
-const uOff = gl.getUniformLocation(prog, "uOff");
+const uOffLoc = gl.getUniformLocation(prog, "uOff");
 const uBg = gl.getUniformLocation(prog, "uBg");
 
 let maxScroll = 1;
@@ -169,24 +169,20 @@ const resize = () => {
 resize();
 window.addEventListener("resize", resize);
 
+/* ── scroll state (drives shape morphing only) ── */
+
 const N = 5;
 const NAMES = ["SCENE 01", "SCENE 02", "SCENE 03", "SCENE 04", "SCENE 05"];
 
 let tgt = 0;
 let smooth = 0;
 let velocity = 0;
-let targetOff = 0;
-let smoothOff = 0;
 
-const panDir = [0, 1, -1, 1, -1];
 const ease = 0.1;
-const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
 window.addEventListener(
   "scroll",
-  () => {
-    tgt = maxScroll > 0 ? scrollY / maxScroll : 0;
-  },
+  () => { tgt = maxScroll > 0 ? scrollY / maxScroll : 0; },
   { passive: true }
 );
 
@@ -204,15 +200,56 @@ window.addEventListener(
         : e.deltaY;
     velocity += delta;
     velocity = Math.max(-600, Math.min(600, velocity));
-    targetOff = 0;
+    closePage();
   },
   { passive: false }
 );
 
+/* ── pagination state (independent of scroll) ── */
+
+const panDir = [0, 1, -1, 1, -1];
+let activePage = -1;
+let targetOff = 0;
+let smoothOff = 0;
+
+const pages = document.querySelectorAll(".page");
+const dots = document.querySelectorAll(".scene-dot");
+
+const openPage = (index) => {
+  if (activePage === index) { closePage(); return; }
+  activePage = index;
+  const halfW = canvas.width / (2 * Math.min(canvas.width, canvas.height));
+  targetOff = panDir[index] * halfW;
+  pages.forEach((p, i) => p.classList.toggle("active", i === index));
+};
+
+const closePage = () => {
+  activePage = -1;
+  targetOff = 0;
+  pages.forEach((p) => p.classList.remove("active"));
+};
+
+dots.forEach((d, i) => {
+  d.style.cursor = "pointer";
+  d.addEventListener("click", () => openPage(i));
+});
+
+document.querySelectorAll('a[href^="#p"]').forEach((a) => {
+  a.addEventListener("click", (e) => {
+    e.preventDefault();
+    const idx = parseInt(a.getAttribute("href").replace("#p", ""), 10);
+    openPage(idx);
+  });
+});
+
+const onManualScroll = () => closePage();
+window.addEventListener("touchstart", onManualScroll, { passive: true });
+
+/* ── HUD ── */
+
 const progFill = document.getElementById("prog-fill");
 const hudPct = document.getElementById("hud-pct");
 const sceneName = document.getElementById("scene-name");
-const dots = document.querySelectorAll(".scene-dot");
 
 const updateHUD = (s) => {
   const p = Math.round(s * 100);
@@ -223,28 +260,9 @@ const updateHUD = (s) => {
   dots.forEach((d, i) => d.classList.toggle("active", i === si));
 };
 
-const revealEls = [
-  ...document.querySelectorAll(
-    ".tag, h1, h2, .body-text, .stat-row, .cta, .h-line, .project-list, .step-list"
-  )
-];
+/* ── theme ── */
 
-revealEls.forEach((el) => {
-  if (el.getBoundingClientRect().top < innerHeight * 0.92)
-    el.classList.add("visible");
-});
-
-const io = new IntersectionObserver(
-  (entries) =>
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add("visible");
-        io.unobserve(e.target);
-      }
-    }),
-  { threshold: 0.1 }
-);
-revealEls.forEach((el) => io.observe(el));
+const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
 const hexToVec3 = (hex) => {
   const n = parseInt(hex.replace("#", ""), 16);
@@ -278,6 +296,8 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   applyTheme(current === "dark" ? "light" : "dark");
 });
 
+/* ── render loop ── */
+
 const t0 = performance.now();
 let lastNow = t0;
 
@@ -306,72 +326,8 @@ const frame = (now) => {
   gl.uniform1f(uScroll, smooth);
   gl.uniform1f(uScene, si);
   gl.uniform1f(uBlend, bl);
-  gl.uniform1f(uOff, smoothOff);
+  gl.uniform1f(uOffLoc, smoothOff);
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
 
 requestAnimationFrame(frame);
-
-let anchorAnim = null;
-
-const stopAnchorAnim = () => {
-  if (anchorAnim) {
-    cancelAnimationFrame(anchorAnim);
-    anchorAnim = null;
-  }
-};
-
-const smoothScrollToY = (targetY, duration = 900) => {
-  stopAnchorAnim();
-  velocity = 0;
-
-  const startY = window.scrollY;
-  const diff = targetY - startY;
-  const start = performance.now();
-
-  const easeInOutCubic = (t) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-  const tick = (now) => {
-    const p = Math.min(1, (now - start) / duration);
-    const e = easeInOutCubic(p);
-
-    window.scrollTo(0, startY + diff * e);
-
-    if (p < 1) {
-      anchorAnim = requestAnimationFrame(tick);
-    } else {
-      anchorAnim = null;
-    }
-  };
-
-  anchorAnim = requestAnimationFrame(tick);
-};
-
-const onManualScroll = () => { stopAnchorAnim(); targetOff = 0; };
-window.addEventListener("wheel", onManualScroll, { passive: true });
-window.addEventListener("touchstart", onManualScroll, { passive: true });
-window.addEventListener("mousedown", onManualScroll, { passive: true });
-window.addEventListener("keydown", onManualScroll);
-
-const navigateTo = (sectionIndex) => {
-  const section = document.getElementById(`s${sectionIndex}`);
-  if (!section) return;
-  const y = Math.max(0, Math.min(section.offsetTop, maxScroll));
-  smoothScrollToY(y);
-  const halfW = canvas.width / (2 * Math.min(canvas.width, canvas.height));
-  targetOff = panDir[sectionIndex] * halfW;
-};
-
-dots.forEach((d, i) => {
-  d.style.cursor = "pointer";
-  d.addEventListener("click", () => navigateTo(i));
-});
-
-document.querySelectorAll('a[href^="#s"]').forEach((a) => {
-  a.addEventListener("click", (e) => {
-    e.preventDefault();
-    const idx = parseInt(a.getAttribute("href").replace("#s", ""), 10);
-    navigateTo(idx);
-  });
-});

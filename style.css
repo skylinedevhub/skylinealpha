@@ -185,16 +185,32 @@ body {
   rotate: 0deg;
 }
 
-#scroll-container {
-  position: relative;
-  z-index: 1;
+#scroll-spacer {
+  height: 500vh;
+  pointer-events: none;
 }
 
-section {
-  min-height: 100vh;
+#pages {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   padding: 6rem 5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.page.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .text-card {
@@ -468,7 +484,7 @@ h2 {
 }
 
 @media (width <= 37.5em) {
-  section {
+  .page {
     padding: 5rem 1.5rem;
   }
   #hud {
