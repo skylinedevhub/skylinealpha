@@ -193,6 +193,22 @@ Three procedural texture layers on all shapes:
 - **CTA buttons** — in both scroll cards and page overlays
 - **Wordmark** — clicks to page 0
 
+## Content Editing Guide
+
+All page content lives in `index.html`. Each page is a `.page` div containing a `.text-card`. Scroll cards mirror page content as summaries.
+
+| Page | HTML location | Content elements |
+|------|--------------|-----------------|
+| Hero (0) | `.page[data-page="0"]` | Tag, h1, body-text, CTA |
+| About (1) | `.page[data-page="1"]` | h-line, tag, h2, body-text ×2, stat-row (3 stats), CTA |
+| Platform (2) | `.page[data-page="2"]` | h-line, tag, h2, body-text, project-list (4 items), body-text, CTA |
+| Work (3) | `.page[data-page="3"]` | h-line, tag, h2, body-text, case-list (3 items), CTA |
+| Contact (4) | `.page[data-page="4"]` | h-line, tag, h2, body-text, contact-grid (3 rows), stat-row (4 cities), CTA |
+
+Scroll cards are in `#scroll-cards` — update these to match when changing page content. Each `.scroll-card[data-scene="N"]` has a `.sc-tag`, `.sc-title`, `.sc-sub`, and `.sc-cta`.
+
+To add/remove pages: update both HTML structures, add/remove a dot in `#scene-strip`, update `N` and `NAMES` array in `main.js`, and extend/trim `panDir`.
+
 ## Development
 
 ```bash
