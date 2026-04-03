@@ -2,6 +2,7 @@ import { getDictionary } from "@/i18n/getDictionary";
 import { locales, type Locale } from "@/i18n/config";
 import SkylineEngine from "@/components/SkylineEngine";
 import LanguageToggle from "@/components/LanguageToggle";
+import ChatBot from "@/components/ChatBot";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -287,6 +288,16 @@ export default async function Home({
                 </span>
               </div>
             </div>
+            <div className="cta-row">
+              <button data-chatbot-build type="button" className="cta">
+                {dict.chatbot.buildCta}
+                <ArrowIcon />
+              </button>
+              <button data-chatbot-inquiry type="button" className="cta">
+                {dict.chatbot.inquiryCta}
+                <ArrowIcon />
+              </button>
+            </div>
             <a className="cta" href="#p0">
               {dict.pages.contact.cta}
               <ArrowIcon />
@@ -299,6 +310,8 @@ export default async function Home({
         {/* Safe: static dictionary content only */}
         <span dangerouslySetInnerHTML={{ __html: dict.credit }} />
       </div>
+
+      <ChatBot dict={dict.chatbot} locale={locale} />
 
       <footer id="legal-footer">
         <a href={`/${locale}/legal/privacy-policy`}>{dict.footer.privacy}</a>

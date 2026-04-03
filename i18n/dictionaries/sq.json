@@ -110,5 +110,19 @@
     "gdpr": "Përputhshmëria GDPR",
     "security": "Siguria",
     "backToSite": "Kthehu në faqe"
+  },
+  "chatbot": {
+    "buildCta": "Nd\u00ebrto faqen time",
+    "inquiryCta": "B\u00ebj nj\u00eb pyetje",
+    "titleBuild": "P\u00cbRMBLEDHJE PROJEKTI",
+    "titleInquiry": "NA PYESNI",
+    "close": "Mbyll",
+    "submit": "D\u00ebrgo te ekipi",
+    "submitting": "Duke d\u00ebrguar...",
+    "placeholder": "Shkruani nj\u00eb mesazh...",
+    "buildGreeting": "P\u00ebrsh\u00ebndetje! Jam k\u00ebtu p\u00ebr t'ju ndihmuar t\u00eb planifikoni faqen tuaj t\u00eb re. M\u00eb tregoni pak p\u00ebr biznesin tuaj dhe \u00e7far\u00eb k\u00ebrkoni \u2014 mund ta d\u00ebrgoni sa her\u00eb t\u00eb doni.",
+    "inquiryGreeting": "P\u00ebrsh\u00ebndetje! Jam k\u00ebtu p\u00ebr t'iu p\u00ebrgjigjur pyetjeve rreth Skyline DevHub dhe sh\u00ebrbimeve tona. \u00c7far\u00eb d\u00ebshironi t\u00eb dini?",
+    "success": "U d\u00ebrgua! Ekipi yn\u00eb do ta shqyrtoj\u00eb bised\u00ebn tuaj dhe do t'ju kontaktoj\u00eb s\u00eb shpejti.",
+    "error": "Di\u00e7ka shkoi keq. Na shkruani n\u00eb info@skylinedevelopmenthub.com"
   }
 }

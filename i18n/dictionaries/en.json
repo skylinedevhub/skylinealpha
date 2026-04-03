@@ -110,5 +110,19 @@
     "gdpr": "GDPR Compliance",
     "security": "Security",
     "backToSite": "Back to site"
+  },
+  "chatbot": {
+    "buildCta": "Build my site",
+    "inquiryCta": "Ask a question",
+    "titleBuild": "PROJECT BRIEF",
+    "titleInquiry": "ASK US ANYTHING",
+    "close": "Close",
+    "submit": "Submit to team",
+    "submitting": "Sending...",
+    "placeholder": "Type a message...",
+    "buildGreeting": "Hi! I'm here to help you scope out a new site. Tell me a bit about your business and what you're looking for \u2014 and feel free to submit whenever you have enough down.",
+    "inquiryGreeting": "Hi! I'm here to answer questions about Skyline DevHub and what we offer. What would you like to know?",
+    "success": "Sent! Our team will review your conversation and reach out soon.",
+    "error": "Something went wrong. Please email us at info@skylinedevelopmenthub.com"
   }
 }
