@@ -1,6 +1,6 @@
 # Skyline DevHub
 
-Mock company website for a tech infrastructure platform company. WebGL scroll-driven animation with a decoupled pagination system for content overlays.
+Development company website — AI-native digital solutions for Albanian businesses. Next.js App Router with WebGL scroll-driven animation, bilingual i18n (Albanian default / English), and a decoupled pagination system for content overlays.
 
 ## Architecture
 
@@ -17,9 +17,9 @@ Mock company website for a tech infrastructure platform company. WebGL scroll-dr
 │ Scroll Cards    │   │   Page Overlays      │   │   Chrome (z:10)    │
 │ (z:3)           │   │   (z:2)              │   │   Nav, HUD, dots,  │
 │ Scene-tracking  │   │   Full content       │   │   theme toggle,    │
-│ summary + CTA   │   │   panels             │   │   credit           │
-│ Visible during  │   │   Visible when       │   └────────────────────┘
-│ scroll          │   │   page is opened     │
+│ summary + CTA   │   │   panels             │   │   lang toggle,     │
+│ Visible during  │   │   Visible when       │   │   credit, footer   │
+│ scroll          │   │   page is opened     │   └────────────────────┘
 └─────────────────┘   └──────────────────────┘
 ```
 
@@ -36,9 +36,71 @@ Scroll never affects pagination. Pagination never affects scroll. Scrolling whil
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Page structure: nav, HUD, dot strip, scroll spacer, 5 scroll cards, 5 page overlays, credit |
-| `style.css` | Full design system: tokens, layout, components, reveal animations, responsive breakpoint |
-| `main.js` | WebGL shader + compilation, scroll/velocity system, pagination state machine, HUD, theme |
+| `app/[locale]/layout.tsx` | Root layout: `next/font` loading (Bebas Neue, DM Mono), html `lang` attribute, CSS import |
+| `app/[locale]/page.tsx` | Main page: all content rendered from i18n dictionaries, `generateMetadata`, `generateStaticParams` |
+| `app/globals.css` | Full design system: tokens, layout, components, reveal animations, responsive breakpoint, legal page styles |
+| `components/SkylineEngine.tsx` | `'use client'` — WebGL shader + compilation, scroll/velocity system, pagination state machine, HUD, theme toggle. Runs entirely in `useEffect`, renders `null` |
+| `components/LanguageToggle.tsx` | `'use client'` — SQ/EN switcher using `next/link` |
+| `i18n/dictionaries/sq.json` | Albanian translations (default language) |
+| `i18n/dictionaries/en.json` | English translations |
+| `i18n/config.ts` | Locale list and default locale |
+| `i18n/getDictionary.ts` | Async dictionary loader with TypeScript types |
+| `middleware.ts` | i18n routing: redirects `/` to `/{locale}` based on `Accept-Language` header |
+
+### Rendering model
+
+- **Server-rendered content** — `page.tsx` is an async server component. All text comes from the dictionary for the current locale. HTML is pre-rendered at build time via `generateStaticParams`.
+- **Client-side hydration** — `SkylineEngine` attaches WebGL, scroll handling, and pagination to the server-rendered DOM in a `useEffect`. It finds elements by `id` / `className` / `querySelector` and manipulates them imperatively.
+- **Legal pages** — Separate routes under `app/[locale]/legal/` with their own layout. No WebGL on these pages.
+
+## i18n
+
+| Locale | Path | Default |
+|--------|------|---------|
+| Albanian | `/sq` | Yes |
+| English | `/en` | No |
+
+- Translations live in `i18n/dictionaries/{sq,en}.json`
+- Middleware detects browser language via `Accept-Language` and redirects
+- Both locale pages are statically generated at build time
+- Fonts loaded via `next/font` (Bebas Neue, DM Mono) — no external Google Fonts request
+- Scene names in the HUD are translated (passed to `SkylineEngine` via `sceneNames` prop and a `useRef`)
+
+### Editing content
+
+All translatable text is in the JSON dictionaries. To change copy:
+
+1. Edit both `sq.json` and `en.json` — they must have identical key structure
+2. Titles use `\n` for line breaks (converted to `<br>` in JSX)
+3. Soft hyphens use `\u00AD` in JSON strings
+4. Company name "Skyline DevHub" and email addresses are NOT translated
+5. The `credit` field uses HTML entities (`&mdash;`)
+
+Dictionary structure:
+```
+meta.title / meta.description    — page <title> and meta description
+nav.about / approach / work / contact
+scenes[]                         — HUD scene names (5 entries)
+dots[]                           — dot strip hover labels (5 entries)
+themeToggle                      — aria-label for theme button
+scrollCards[0-4].tag/title/sub/cta
+pages.hero / about / approach / work / contact
+footer.privacy / terms / gdpr / security / backToSite
+credit
+```
+
+## Legal Pages
+
+Four legal pages under `app/[locale]/legal/`:
+
+| Route | Content |
+|-------|---------|
+| `/legal/privacy-policy` | Privacy policy — data collection, usage, rights, cookies |
+| `/legal/terms-of-service` | Terms — acceptable use, IP, payments, liability |
+| `/legal/gdpr-compliance` | GDPR — legal basis, data subject rights, DPA, breach notification |
+| `/legal/security` | Security practices — infrastructure, encryption, certifications, bug bounty |
+
+These share a layout (`legal/layout.tsx`) with back-to-site navigation. Content is in English (standard for Albanian tech companies). A thin fixed footer on the main page links to all four.
 
 ## Design System
 
@@ -55,18 +117,18 @@ No chromatic color anywhere — CSS or shader. Accent is white (dark) or near-bl
 | `--card-bg` | `rgba(10,10,10,0.82)` | `rgba(240,240,240,0.88)` |
 | `--card-border` | `rgba(255,255,255,0.15)` | `rgba(26,26,26,0.18)` |
 
-Theme is toggled via `data-theme` attribute on `<html>`. CSS variables swap automatically. WebGL background (`uBg` uniform) must also be updated via `updateBg()`.
+Theme is toggled via `data-theme` attribute on `<html>`. CSS variables swap automatically. WebGL background (`uBg` uniform) is updated in `SkylineEngine`'s `applyTheme()`.
 
 ### Typography
 
 | Role | Font | Sizing |
 |------|------|--------|
-| Display (h1, h2, stat-num, sc-title) | Bebas Neue | `clamp(2rem, Xvw, Yrem)`, `line-height: 0.92` |
-| Body / UI (everything else) | DM Mono 300/400 | `0.55rem` – `0.78rem`, `letter-spacing: 0.08em – 0.25em` |
+| Display (h1, h2, stat-num, sc-title) | Bebas Neue (via `next/font`) | `clamp(2rem, Xvw, Yrem)`, `line-height: 0.92` |
+| Body / UI (everything else) | DM Mono 300/400 (via `next/font`) | `0.55rem` - `0.78rem`, `letter-spacing: 0.08em - 0.25em` |
 
 All text is uppercase (`text-transform: uppercase`) except body-text paragraphs.
 
-### Spacing & Layout
+### Spacing and Layout
 
 | Token | Value | Usage |
 |-------|-------|-------|
@@ -77,58 +139,38 @@ All text is uppercase (`text-transform: uppercase`) except body-text paragraphs.
 
 ### Split-screen page layout
 
-Page overlays use a **50/50 split-screen** design. The `.text-card` is a full-viewport-height frosted glass pane taking 50% of the screen width. The WebGL shape occupies the other 50%, centered in its half. The `.page` container uses `align-items: stretch` (no padding) so the pane spans edge to edge vertically.
+Page overlays use a **50/50 split-screen** design. The `.text-card` is a full-viewport-height frosted glass pane taking 50% of the screen width. The WebGL shape occupies the other 50%, centered in its half.
 
 | Class | Alignment | Border (dividing edge) | Shape half |
 |-------|-----------|------------------------|------------|
 | `.text-card` (default) | Left 50% | `border-right` | Right |
 | `.text-card.right` | Right 50% (`margin-inline-start: auto`) | `border-left` | Left |
 
-The pane uses `backdrop-filter: blur(12px)` for a frosted glass effect over the WebGL canvas. Content is vertically centered via `flex-direction: column; justify-content: center`.
-
-On mobile (`≤ 37.5em`), panes go `width: 100%` — no split.
-
-Scroll cards (`.scroll-card`) are a separate component — always left-aligned with `border-left`, `max-width: 22rem`.
+The pane uses `backdrop-filter: blur(12px)` for a frosted glass effect. On mobile (37.5em or below), panes go `width: 100%`.
 
 ### Pagination pan directions
 
-Pages alternate which half the shape occupies. The shape is centered in the non-content half via `canvas.width / (4 * min(w, h))` offset. Positive `uOff` in the shader shifts the viewport left, making the shape appear on the right — so `panDir` is negative when the card is on the right (to push the shape left).
-
 | Page | panDir | Shape half | Content pane |
 |------|--------|-----------|--------------|
-| 0 (Hero) | `0` | Centered (visible through pane) | Left |
+| 0 (Hero) | `0` | Centered | Left |
 | 1 (About) | `-1` | Left | Right |
-| 2 (Platform) | `1` | Right | Left |
+| 2 (Approach) | `1` | Right | Left |
 | 3 (Work) | `-1` | Left | Right |
 | 4 (Contact) | `1` | Right | Left |
 
-### Component inventory
-
-| Component | CSS class | Used in |
-|-----------|-----------|---------|
-| Tag label | `.tag`, `.sc-tag` | All cards |
-| Horizontal rule | `.h-line` | Page cards (not hero) |
-| Stat row | `.stat-row > .stat` | About, Contact pages |
-| Project list | `.project-list > .project-item` | Platform page |
-| Case study list | `.case-list > .case-item` | Work page |
-| Contact grid | `.contact-grid > .contact-block` | Contact page |
-| CTA button | `.cta`, `.sc-cta` | All cards |
-
 ### Reveal animation system
 
-Page overlay children start at `opacity: 0` and animate in when `.page.active` is applied via CSS parent selector. Staggered delays:
+Page overlay children start at `opacity: 0` and animate in when `.page.active` is applied. Staggered delays:
 
 ```
-.tag         →  0s
-h1/h2        →  0.06s
-.body-text   →  0.14s
-lists/grids  →  0.22s
-.stat-row    →  0.26s
-.cta         →  0.32s
-.h-line      →  scale 0→1 (no delay)
+.tag         ->  0s
+h1/h2        ->  0.06s
+.body-text   ->  0.14s
+lists/grids  ->  0.22s
+.stat-row    ->  0.26s
+.cta         ->  0.32s
+.h-line      ->  scale 0 to 1 (no delay)
 ```
-
-Scroll cards use a different system: `translate: 0 0.5rem → 0 0` with `opacity` transition on `.scroll-card.active`.
 
 ## WebGL Shader
 
@@ -142,7 +184,7 @@ Scroll cards use a different system: `translate: 0 0.5rem → 0 0` with `opacity
 | 3 | PRISM | Spinning octahedron | XY rotation at `t * 0.5` |
 | 4 | HELIX | Interlocked double-torus | Two tori at offset rotations |
 
-Scenes blend via `mix()` controlled by `uSc` (scene index) and `uBl` (blend factor 0→1).
+Scenes blend via `mix()` controlled by `uSc` (scene index) and `uBl` (blend factor 0 to 1).
 
 ### Uniforms
 
@@ -150,9 +192,9 @@ Scenes blend via `mix()` controlled by `uSc` (scene index) and `uBl` (blend fact
 |---------|------|--------|
 | `uR` | vec2 | Canvas resolution (px) |
 | `uT` | float | Time (seconds since load) |
-| `uS` | float | Scroll progress (0→1) — drives `pal()` |
-| `uSc` | float | Scene index (0→3) |
-| `uBl` | float | Blend factor (0→1) between scenes |
+| `uS` | float | Scroll progress (0 to 1) — drives `pal()` |
+| `uSc` | float | Scene index (0 to 3) |
+| `uBl` | float | Blend factor (0 to 1) between scenes |
 | `uOff` | float | Horizontal camera offset (pagination pan) |
 | `uBg` | vec3 | Background color (synced with CSS theme) |
 
@@ -160,23 +202,15 @@ Scenes blend via `mix()` controlled by `uSc` (scene index) and `uBl` (blend fact
 
 Three procedural texture layers on all shapes:
 
-1. **Noise bands** — `noise3(vec3(p.x*3, p.y*8 - uT*0.08, p.z*3))` — horizontal streaks drifting upward. Hardened via `smoothstep(.35,.65)`. Adds `0.12` max brightness.
-
-2. **Edge pulse** — `sin(p.y*6 - uT*0.6)` raised to power 12, multiplied by Fresnel. A thin bright ring sweeping vertically along silhouette edges.
-
-3. **Brushed specular** — `noise3(p*28 + uT*0.1)` modulates the specular highlight, creating irregular grain like milled metal.
-
-### Camera
-
-- Ray origin: `vec3(0, 0, 2.4)`
-- Ray direction: `normalize(vec3(suv, -1.2))` where `suv` is UV offset by `uOff`
-- Vignette uses viewport-centered UV (not offset) — stays screen-fixed during pan
+1. **Noise bands** — horizontal streaks drifting upward. `smoothstep(.35,.65)`. Adds `0.12` max brightness.
+2. **Edge pulse** — `sin(p.y*6 - uT*0.6)^12` multiplied by Fresnel. Thin bright ring sweeping vertically.
+3. **Brushed specular** — `noise3(p*28 + uT*0.1)` modulates specular highlight, creating irregular grain.
 
 ## Interaction Model
 
 ### Scroll
 - `#scroll-spacer` provides 500vh of scroll height
-- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, ±600 cap)
+- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, plus/minus 600 cap)
 - `smooth` chases `tgt` via exponential easing (`1 - exp(-dt * 8)`)
 - Scroll cards swap based on current scene index in the frame loop
 
@@ -189,47 +223,37 @@ Three procedural texture layers on all shapes:
 
 ### Navigation entry points
 - **Dot strip** — 5 clickable dots, left edge, hover shows label via `::after`
-- **Top nav links** — About, Platform, Work, Contact
+- **Top nav links** — About, Approach, Work, Contact
 - **CTA buttons** — in both scroll cards and page overlays
 - **Wordmark** — clicks to page 0
-
-## Content Editing Guide
-
-All page content lives in `index.html`. Each page is a `.page` div containing a `.text-card`. Scroll cards mirror page content as summaries.
-
-| Page | HTML location | Content elements |
-|------|--------------|-----------------|
-| Hero (0) | `.page[data-page="0"]` | Tag, h1, body-text, CTA |
-| About (1) | `.page[data-page="1"]` | h-line, tag, h2, body-text ×2, stat-row (3 stats), CTA |
-| Platform (2) | `.page[data-page="2"]` | h-line, tag, h2, body-text, project-list (4 items), body-text, CTA |
-| Work (3) | `.page[data-page="3"]` | h-line, tag, h2, body-text, case-list (3 items), CTA |
-| Contact (4) | `.page[data-page="4"]` | h-line, tag, h2, body-text, contact-grid (3 rows), stat-row (4 cities), CTA |
-
-Scroll cards are in `#scroll-cards` — update these to match when changing page content. Each `.scroll-card[data-scene="N"]` has a `.sc-tag`, `.sc-title`, `.sc-sub`, and `.sc-cta`.
-
-To add/remove pages: update both HTML structures, add/remove a dot in `#scene-strip`, update `N` and `NAMES` array in `main.js`, and extend/trim `panDir`.
+- **Language toggle** — SQ / EN bordered buttons in nav
 
 ## Development
 
 ```bash
-npm run dev    # serves on localhost:3000 via npx serve
+npm run dev    # Next.js dev server on localhost:3000
+npm run build  # production build
+npm run start  # serve production build locally
 ```
 
 ## Deployment
 
-Static deploy on Vercel. GitHub repo connected — pushes to `main` auto-deploy to production.
+Next.js on Vercel. GitHub repo connected — pushes to `main` auto-deploy to production.
 
-- **Repo**: github.com/skyline-development-hub/skylinedevhub
+- **Repo**: github.com/skyline-development-hub/skylinealpha
 - **Production URL**: skylinedevhub.vercel.app
+- **Framework**: Next.js (must be set in Vercel project settings)
 
 ## Conventions
 
-- **Static vanilla JS** — no frameworks, no build tools, no bundlers
+- **Next.js App Router** — React server components by default, `'use client'` only where needed
 - **Monotone grayscale only** — never introduce chromatic color in CSS or shader
 - **Two-axis independence** — scroll and pagination must never affect each other
-- **Theme sync** — any CSS theme change must also call `updateBg()` for the WebGL uniform
+- **Theme sync** — any CSS theme change must also update the WebGL `uBg` uniform
 - **Shader effects are additive** — each texture layer adds to `col`, never multiplies or replaces
 - **Split-screen panes** — content pane takes 50% width, shape centered in opposite half (panDir: `[0, -1, 1, -1, 1]`)
 - **Responsive breakpoint** — single breakpoint at `37.5em` (600px), hides dot strip and nav links
+- **i18n parity** — `sq.json` and `en.json` must always have identical key structure
+- **Fonts via next/font** — never use `@import` or `<link>` for Google Fonts
 - **All UI text** — DM Mono, uppercase, wide letter-spacing
 - **All display text** — Bebas Neue, tight line-height (0.92)

@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-03
 **Status:** Approved
-**Scope:** Priority feature for skylinealpha (skylinedevhub.vercel.app)
+**Scope:** Priority feature for skylinedevhub (skylinedevhub.vercel.app)
 
 ## Problem
 

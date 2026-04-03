@@ -3,8 +3,6 @@
 import Link from "next/link";
 
 export default function LanguageToggle({ locale }: { locale: string }) {
-  const otherLocale = locale === "sq" ? "en" : "sq";
-
   return (
     <div className="lang-toggle">
       <Link
