@@ -46,13 +46,22 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { messages, flow } = await req.json();
+    const { messages: rawMessages, flow } = await req.json();
     const system = flow === "inquiry" ? SYSTEM_INQUIRY : SYSTEM_BUILD;
+
+    // Drop the client-side greeting (first assistant message) —
+    // Gemini requires conversations to start with a user message.
+    const messages = (rawMessages as Array<Record<string, unknown>>).filter(
+      (m, i) => !(i === 0 && m.role === "assistant")
+    ) as Parameters<typeof convertToModelMessages>[0];
 
     const result = streamText({
       model: google("gemini-2.0-flash"),
       system,
       messages: await convertToModelMessages(messages),
+      onError: ({ error }) => {
+        console.error("Gemini stream error:", error);
+      },
     });
 
     return result.toUIMessageStreamResponse();
