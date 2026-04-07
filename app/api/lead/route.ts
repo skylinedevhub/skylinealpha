@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   const body = `Flow: ${flowLabel}\n\n=== Conversation ===\n\n${transcript}`;
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_EMAIL ?? "info@skylinedevelopmenthub.com";
+  const to = process.env.LEAD_EMAIL || "info@skylinedevelopmenthub.com";
 
   if (apiKey) {
     const res = await fetch("https://api.resend.com/emails", {
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: `Skyline DevHub <${process.env.RESEND_FROM ?? "onboarding@resend.dev"}>`,
+        from: `Skyline DevHub <${process.env.RESEND_FROM || "onboarding@resend.dev"}>`,
         to,
         subject: `[${flowLabel}] New chatbot lead`,
         text: body,
