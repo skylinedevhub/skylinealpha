@@ -77,21 +77,48 @@
       "tag": "03 — Punët",
       "title": "RASTE\nSTUDIMORE",
       "body": "Zgjidhjet më të mira bëhen pjesë e pandashme e punës. Ja çfarë kanë arritur partnerët tanë përmes transformimit digjital me bazë AI.",
+      "prev": "Mbrapa",
+      "next": "Përpara",
+      "counter": "{current} / {total}",
       "cases": [
         {
-          "client": "Sektori Publik",
+          "client": "TrustGuard",
+          "tag": "Gama e Produkteve + Zhvillim i Personalizuar",
+          "desc": "Infrastrukturë besueshmërie AI për verifikimin e identitetit, zbulimin e paragjykimeve dhe analitikën e auditimit. Shërben 100+ organizata në shërbime financiare, shëndetësi dhe tregti elektronike.",
+          "challenge": "Organizatat që vendosin AI përballen me paragjykime të fshehura demografike, dobësi sigurie të modeleve dhe vendimmarrje të paqartë. Kornizat tradicionale të sigurisë nuk u ndërtuan për këtë.",
+          "solution": "Ndërtuam një platformë gjithëpërfshirëse besueshmërie AI: tubacion verifikimi identiteti në kohë reale, vlerësim drejtësie shumëdimensionale, monitorim i vazhdueshëm modelesh dhe analitikë auditimi e nivelit ndërmarrës me eksporte përputhshmërie me një klik për SOC 2, ISO 27001 dhe GDPR.",
+          "results": [
+            { "metric": "85%", "label": "Ulje mashtrimi" },
+            { "metric": "100+", "label": "Organizata" },
+            { "metric": "50M+", "label": "Transaksione ditore" }
+          ],
+          "link": "https://frontend-production-e817.up.railway.app/"
+        },
+        {
+          "client": "CRA T3010 Data Explorer",
+          "tag": "Zhvillim i Personalizuar + Integrim",
+          "desc": "Platformë interaktive kërkimi SQL për eksplorimin e të dhënave financiare të organizatave bamirëse kanadeze nga formularët tatimorë CRA T3010. 83,000+ bamirësi të kërkueshme me pyetje në gjuhë natyrore me AI.",
+          "challenge": "Të dhënat financiare të bamirësive kanadeze të bllokuara në formate të ngurta qeveritare pa asnjë mënyrë të aksesueshme për profesionistët ligjorë, studiuesit apo auditorët për të kërkuar, filtruar ose agreguar mes 83,000+ organizatave dhe 150+ metrikave financiare.",
+          "solution": "Ndërtuam një eksplorer të dhënash me DuckDB me dy mënyra kërkimi, filtrim dinamik mes nëntë tabelave të normalizuara, eksport Excel dhe një dritare bisede AI që përkthen gjuhën natyrore në SQL — duke lejuar përdoruesit jo-teknikë të kërkojnë financat e bamirësive në mënyrë bisedore.",
+          "results": [
+            { "metric": "83K+", "label": "Bamirësi të indeksuara" },
+            { "metric": "150+", "label": "Metrika financiare" },
+            { "metric": "9", "label": "Tabela të dhënash" }
+          ],
+          "link": "https://t3010datex.vercel.app"
+        },
+        {
+          "client": "Shtepi\u00ABAL",
           "tag": "Gama e Produkteve + Integrim",
-          "desc": "Digjitalizim i plotë i shërbimeve qytetare në departamente të shumta. Përpunimi i dokumenteve me AI uli kohët e trajtimit me 94%. Operacione pa letër brenda gjashtë muajsh."
-        },
-        {
-          "client": "Shërbime Financiare",
-          "tag": "Zhvillim i Personalizuar",
-          "desc": "Monitorim automatik i përputhshmërisë dhe përpunim transaksionesh. Integrim i plotë me infrastrukturën bankare kombëtare. Rishikimi manual u eliminua."
-        },
-        {
-          "client": "Logjistikë & Zinxhiri i Furnizimit",
-          "tag": "Konsulencë + Gama e Produkteve",
-          "desc": "Menaxhim flote me bazë AI dhe optimizim rrugësh në korridorin e Ballkanit Perëndimor. Kostot operacionale u ulën 31%. Saktësia e dorëzimit mbi 99.7%."
+          "desc": "Agregator i pasurive të paluajtshme në Shqipëri që bashkon njoftimet nga 13 burime në një platformë të unifikuar kërkimi. 12,500+ njoftime aktive në të gjitha qytetet kryesore.",
+          "challenge": "Tregu i pasurive të paluajtshme në Shqipëri është i fragmentuar mes dhjetëra faqeve të pavarura njoftime pa kërkim të unifikuar. Blerësit dhe qiramarrësit duhet të kontrollojnë platforma të shumta manualisht, me formate të dhënash jo-konsistente dhe pa krahasim ndër-burimor.",
+          "solution": "Ndërtuam një tubacion agregimi automatik që normalizon njoftimet nga 13 burime në një platformë të vetme të kërkueshme me navigim sipas qytetit, filtrim sipas llojit të transaksionit dhe të dhëna të strukturuara për dukshmëri në motorët e kërkimit.",
+          "results": [
+            { "metric": "12.5K+", "label": "Njoftime aktive" },
+            { "metric": "13", "label": "Burime të agreguara" },
+            { "metric": "6", "label": "Qytete kryesore" }
+          ],
+          "link": "https://shtepi-al.vercel.app"
         }
       ],
       "cta": "Na kontaktoni"

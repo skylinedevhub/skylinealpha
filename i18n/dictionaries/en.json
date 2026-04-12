@@ -77,21 +77,48 @@
       "tag": "03 — Work",
       "title": "CASE\nSTUDIES",
       "body": "The best solutions disappear into the workflow. Here's what our partners have achieved through AI-native digital transformation.",
+      "prev": "Previous",
+      "next": "Next",
+      "counter": "{current} / {total}",
       "cases": [
         {
-          "client": "Public Sector",
+          "client": "TrustGuard",
+          "tag": "Product Suite + Custom Development",
+          "desc": "AI trust infrastructure for identity verification, bias detection, and audit analytics. Serving 100+ organizations across financial services, healthcare, and e-commerce.",
+          "challenge": "Organizations deploying AI face hidden demographic biases, model security vulnerabilities, and opaque decision-making. Traditional security frameworks weren't built for this.",
+          "solution": "Built a comprehensive AI trust platform: real-time identity verification pipeline, multi-dimensional fairness scoring, continuous model monitoring, and enterprise-grade audit analytics with one-click compliance exports for SOC 2, ISO 27001, and GDPR.",
+          "results": [
+            { "metric": "85%", "label": "Fraud reduction" },
+            { "metric": "100+", "label": "Organizations" },
+            { "metric": "50M+", "label": "Daily transactions" }
+          ],
+          "link": "https://frontend-production-e817.up.railway.app/"
+        },
+        {
+          "client": "CRA T3010 Data Explorer",
+          "tag": "Custom Development + Integration",
+          "desc": "Interactive SQL query platform for exploring Canadian charitable organization financial data from CRA T3010 tax forms. 83,000+ charities searchable with AI-powered natural language queries.",
+          "challenge": "Canadian charity financial data locked in rigid government formats with no accessible way for legal professionals, researchers, or auditors to query, filter, or aggregate across 83,000+ organizations and 150+ financial metrics.",
+          "solution": "Built a DuckDB-powered data explorer with dual query modes, dynamic filtering across nine normalized tables, Excel export, and an AI chat sidebar that translates natural language into SQL — letting non-technical users query charity financials conversationally.",
+          "results": [
+            { "metric": "83K+", "label": "Charities indexed" },
+            { "metric": "150+", "label": "Financial metrics" },
+            { "metric": "9", "label": "Data tables" }
+          ],
+          "link": "https://t3010datex.vercel.app"
+        },
+        {
+          "client": "Shtepi\u00ABAL",
           "tag": "Product Suite + Integration",
-          "desc": "Full digitization of citizen services across multiple departments. AI-driven document processing reduced handling times by 94%. Zero-paper operations within six months."
-        },
-        {
-          "client": "Financial Services",
-          "tag": "Custom Development",
-          "desc": "Automated compliance monitoring and transaction processing. End-to-end integration with national banking infrastructure. Manual review eliminated."
-        },
-        {
-          "client": "Logistics & Supply Chain",
-          "tag": "Advisory + Product Suite",
-          "desc": "AI-native fleet management and route optimization across the Western Balkans corridor. Operational costs reduced 31%. Delivery accuracy above 99.7%."
+          "desc": "Albanian real estate aggregator consolidating listings from 13 sources into a unified search platform. 12,500+ active listings across all major cities.",
+          "challenge": "Albania's real estate market is fragmented across dozens of independent listing sites with no unified search. Buyers and renters must check multiple platforms manually, with inconsistent data formats and no cross-source comparison.",
+          "solution": "Built an automated aggregation pipeline that normalizes listings from 13 sources into a single searchable platform with city-based navigation, transaction type filtering, and structured data for search engine visibility.",
+          "results": [
+            { "metric": "12.5K+", "label": "Active listings" },
+            { "metric": "13", "label": "Sources aggregated" },
+            { "metric": "6", "label": "Major cities" }
+          ],
+          "link": "https://shtepi-al.vercel.app"
         }
       ],
       "cta": "Get in touch"

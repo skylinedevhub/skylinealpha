@@ -3,6 +3,7 @@ import { locales, type Locale } from "@/i18n/config";
 import SkylineEngine from "@/components/SkylineEngine";
 import LanguageToggle from "@/components/LanguageToggle";
 import ChatBot from "@/components/ChatBot";
+import CaseCarousel from "@/components/CaseCarousel";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -227,26 +228,13 @@ export default async function Home({
               }}
             />
             <p className="body-text">{dict.pages.work.body}</p>
-            <div className="case-list">
-              {dict.pages.work.cases.map(
-                (
-                  c: { client: string; tag: string; desc: string },
-                  i: number
-                ) => (
-                  <div key={i} className="case-item">
-                    <div className="case-header">
-                      <span className="case-client">{c.client}</span>
-                      <span className="case-tag">{c.tag}</span>
-                    </div>
-                    <p className="case-desc">{c.desc}</p>
-                  </div>
-                )
-              )}
-            </div>
-            <a className="cta" href="#p4">
-              {dict.pages.work.cta}
-              <ArrowIcon />
-            </a>
+            <CaseCarousel
+              cases={dict.pages.work.cases}
+              prevLabel={dict.pages.work.prev}
+              nextLabel={dict.pages.work.next}
+              counterTemplate={dict.pages.work.counter}
+              ctaLabel={dict.pages.work.cta}
+            />
           </div>
         </div>
 

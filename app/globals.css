@@ -433,7 +433,7 @@ h1, h2,
 .cta-row,
 .h-line,
 .project-list,
-.case-list,
+.case-carousel,
 .contact-grid {
   opacity: 0;
   translate: 0 var(--reveal-offset);
@@ -463,7 +463,7 @@ h1, h2 {
 .page.active h2          { opacity: 1; translate: 0 0; transition-delay: 0.06s; }
 .page.active .body-text  { opacity: 1; translate: 0 0; transition-delay: 0.14s; }
 .page.active .project-list,
-.page.active .case-list,
+.page.active .case-carousel,
 .page.active .contact-grid { opacity: 1; translate: 0 0; transition-delay: 0.22s; }
 .page.active .stat-row   { opacity: 1; translate: 0 0; transition-delay: 0.26s; }
 .page.active .cta-row    { opacity: 1; translate: 0 0; transition-delay: 0.30s; }
@@ -573,38 +573,72 @@ h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
   color: var(--muted);
 }
 
-/* ── case study list ── */
+/* ── case study carousel ── */
 
-.case-list {
+.case-carousel {
   margin-block-start: 1.5rem;
+}
+
+.case-nav {
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  align-items: center;
+  gap: 1rem;
+  margin-block-end: 1.5rem;
 }
 
-.case-item {
-  padding-block-end: 1.25rem;
-  border-bottom: var(--hairline) solid var(--card-border);
+.case-arrow {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: var(--hairline) solid var(--card-border);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
 }
 
-.case-item:last-child {
-  border-bottom: none;
-  padding-block-end: 0;
+.case-arrow svg {
+  width: 0.7rem;
+  height: 0.7rem;
 }
 
-.case-header {
+.case-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.case-counter {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.case-slide {
+  animation: caseIn 0.35s ease-out;
+}
+
+@keyframes caseIn {
+  from { opacity: 0; translate: 0.5rem 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+.case-slide-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-block-end: 0.5rem;
+  margin-block-end: 0.75rem;
   flex-direction: row-reverse;
 }
 
 .case-client {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg);
+  font-weight: 400;
 }
 
 .case-tag {
@@ -619,6 +653,60 @@ h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
   line-height: 1.7;
   color: color-mix(in srgb, var(--fg) 45%, transparent);
   text-align: right;
+  margin-block-end: 1.25rem;
+  padding-block-end: 1.25rem;
+  border-bottom: var(--hairline) solid var(--card-border);
+}
+
+.case-detail {
+  margin-block-end: 1rem;
+}
+
+.case-detail-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-block-end: 0.35rem;
+}
+
+.case-detail-text {
+  font-size: 0.62rem;
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--fg) 55%, transparent);
+}
+
+.case-results {
+  display: flex;
+  gap: 1.5rem;
+  margin-block: 1.25rem;
+  padding-block: 1.25rem;
+  border-top: var(--hairline) solid var(--card-border);
+  border-bottom: var(--hairline) solid var(--card-border);
+}
+
+.case-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.case-result-metric {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 0.92;
+  color: var(--accent);
+}
+
+.case-result-label {
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.case-slide > .cta {
+  margin-block-start: 0.5rem;
 }
 
 /* ── contact grid ── */
@@ -1114,7 +1202,8 @@ h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
   .text-card { width: 100%; padding: 5rem 1.5rem; }
   #theme-toggle { bottom: 1rem; left: 1.25rem; translate: 0 0; }
   #credit { display: none; }
-  .case-header { flex-direction: column; gap: 0.2rem; }
+  .case-slide-header { flex-direction: column; gap: 0.2rem; }
+  .case-results { gap: 1rem; flex-wrap: wrap; }
   #scroll-cards { padding: 0 1.5rem; align-items: flex-end; padding-bottom: 5rem; }
   .scroll-card { max-width: 100%; }
   #legal-footer { gap: 0.5rem; font-size: 0.42rem; padding: 0.4rem 1rem; padding-block-start: 1.5rem; }
