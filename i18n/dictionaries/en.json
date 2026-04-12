@@ -7,7 +7,8 @@
     "about": "About",
     "approach": "Approach",
     "work": "Work",
-    "contact": "Contact"
+    "contact": "Contact",
+    "buildCta": "Build my site"
   },
   "scenes": ["ORIGIN", "TORUS", "LATTICE", "PRISM", "HELIX"],
   "dots": ["Home", "About", "Approach", "Work", "Contact"],
@@ -49,7 +50,8 @@
       "tag": "Development & Digital Solutions — Albania",
       "title": "AI-NATIVE\nDIGI\u00ADTAL\nSOLUTIONS",
       "body": "Skyline DevHub is a development company engineering the digital future of Albanian business — AI-native and automation-first from the ground up. We deliver maximally efficient solutions through our own product suite and dedicated services.",
-      "cta": "Learn more"
+      "cta": "Learn more",
+      "free": "Get a free website — built by AI, delivered in minutes"
     },
     "about": {
       "tag": "01 — About",

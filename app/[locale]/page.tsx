@@ -67,7 +67,7 @@ export default async function Home({
             {dict.nav.contact}
           </a>
         </div>
-        <LanguageToggle locale={locale} />
+<LanguageToggle locale={locale} />
       </nav>
 
       <div id="hud">
@@ -152,10 +152,17 @@ export default async function Home({
               }}
             />
             <p className="body-text">{dict.pages.hero.body}</p>
-            <a className="cta" href="#p1">
-              {dict.pages.hero.cta}
-              <ArrowIcon />
-            </a>
+            <p className="body-text hero-free">{dict.pages.hero.free}</p>
+            <div className="cta-row">
+              <button data-chatbot-build type="button" className="cta">
+                {dict.chatbot.buildCta}
+                <ArrowIcon />
+              </button>
+              <a className="cta" href="#p1">
+                {dict.pages.hero.cta}
+                <ArrowIcon />
+              </a>
+            </div>
           </div>
         </div>
 

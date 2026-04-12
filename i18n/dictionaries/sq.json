@@ -7,7 +7,8 @@
     "about": "Rreth Nesh",
     "approach": "Qasja",
     "work": "Punët",
-    "contact": "Kontakti"
+    "contact": "Kontakti",
+    "buildCta": "Ndërto faqen time"
   },
   "scenes": ["ORIGJINA", "TORUS", "RRJETË", "PRIZËM", "SPIRALE"],
   "dots": ["Kryefaqja", "Rreth Nesh", "Qasja", "Punët", "Kontakti"],
@@ -49,7 +50,8 @@
       "tag": "Zhvillim & Zgjidhje Digjitale — Shqipëri",
       "title": "ZGJIDHJE\nDIGJI\u00ADTALE\nME AI",
       "body": "Skyline DevHub është një kompani zhvillimi që ndërton të ardhmen digjitale të biznesit shqiptar — me bazë AI dhe automatizim në themel që nga fillimi. Ofrojmë zgjidhje maksimalisht efikase përmes gamës sonë të produkteve dhe shërbimeve të dedikuara.",
-      "cta": "Mësoni më shumë"
+      "cta": "Mësoni më shumë",
+      "free": "Merrni një faqe interneti falas — ndërtuar nga AI, dorëzuar në minuta"
     },
     "about": {
       "tag": "01 — Rreth Nesh",

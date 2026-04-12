@@ -114,6 +114,7 @@ body {
   color: var(--accent);
 }
 
+
 /* ── language toggle ── */
 
 .lang-toggle {
@@ -494,6 +495,12 @@ h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
   line-height: 1.8;
   color: color-mix(in srgb, var(--fg) 55%, transparent);
   margin-block-start: 1.25rem;
+}
+
+.hero-free {
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--accent);
 }
 
 .h-line {
