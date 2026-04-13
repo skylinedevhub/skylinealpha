@@ -41,18 +41,18 @@ describe("Issue #1 — Hero CTA + free messaging", () => {
   });
 });
 
-describe("Issue #2 — Nav discoverability", () => {
-  it("renders a CTA with data-chatbot-build in the nav", async () => {
+describe("Nav structure", () => {
+  it("renders the top-nav with navigation links", async () => {
     await renderHome();
     const nav = document.getElementById("top-nav")!;
-    const navBuildBtn = nav.querySelector("[data-chatbot-build]");
-    expect(navBuildBtn).toBeInTheDocument();
+    expect(nav).toBeInTheDocument();
+    const links = nav.querySelectorAll(".nav-link");
+    expect(links.length).toBe(4);
   });
 
-  it("nav CTA contains build-related text", async () => {
+  it("renders the language toggle in the nav", async () => {
     await renderHome();
-    const nav = document.getElementById("top-nav")!;
-    const navBuildBtn = nav.querySelector("[data-chatbot-build]");
-    expect(navBuildBtn).toHaveTextContent(/build/i);
+    const toggle = document.querySelector('[data-testid="lang-toggle"]');
+    expect(toggle).toBeInTheDocument();
   });
 });

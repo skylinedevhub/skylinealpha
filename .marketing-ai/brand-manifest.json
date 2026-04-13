@@ -1,0 +1,229 @@
+{
+  "version": "1.0",
+  "name": "Skyline DevHub",
+  "url": "https://skylinedevelopmenthub.com",
+  "repo": {
+    "owner": "skyline-development-hub",
+    "repo": "skylinealpha",
+    "branch": "main"
+  },
+  "colors": [
+    { "hex": "#0a0a0a", "role": "background", "cssVariable": "--bg", "note": "Dark theme background" },
+    { "hex": "#f0f0f0", "role": "background", "cssVariable": "--bg", "note": "Light theme background" },
+    { "hex": "#e0e0e0", "role": "text", "cssVariable": "--fg", "note": "Dark theme foreground" },
+    { "hex": "#0d0d0d", "role": "text", "cssVariable": "--fg", "note": "Light theme foreground" },
+    { "hex": "#666666", "role": "secondary", "cssVariable": "--muted", "note": "Dark theme muted/secondary text" },
+    { "hex": "#999999", "role": "secondary", "cssVariable": "--muted", "note": "Light theme muted/secondary text" },
+    { "hex": "#ffffff", "role": "accent", "cssVariable": "--accent", "note": "Dark theme accent (white)" },
+    { "hex": "#1a1a1a", "role": "accent", "cssVariable": "--accent", "note": "Light theme accent (near-black)" }
+  ],
+  "fonts": [
+    {
+      "family": "Bebas Neue",
+      "weights": [400],
+      "role": "heading",
+      "source": "google-fonts",
+      "cssVariable": "--font-display",
+      "usage": "Display headings (h1, h2), stat numbers, scroll card titles, wordmark"
+    },
+    {
+      "family": "DM Mono",
+      "weights": [300, 400],
+      "role": "body",
+      "source": "google-fonts",
+      "cssVariable": "--font-mono",
+      "usage": "All body text, UI elements, navigation, tags, CTAs, chatbot"
+    }
+  ],
+  "logos": [],
+  "tone": {
+    "primary_tone": "authoritative-minimal",
+    "formality_score": 0.82,
+    "personality_traits": [
+      "authoritative",
+      "concise",
+      "technical",
+      "outcome-driven",
+      "understated"
+    ],
+    "target_audience": "Albanian businesses seeking digital transformation, public sector, financial services, logistics companies",
+    "vocabulary_complexity": "moderate",
+    "key_themes": [
+      "AI-native development",
+      "automation-first systems",
+      "digital transformation",
+      "outcomes over features",
+      "operational efficiency"
+    ],
+    "sample_copy": [
+      "Skyline DevHub is a development company engineering the digital future of Albanian business — AI-native and automation-first from the ground up.",
+      "We are a development company, not a software vendor. We don't sell features or functionality — we engineer complete solutions.",
+      "While others retrofit AI onto legacy workflows, we build automation-first systems from the ground up — delivering efficiency that compounds.",
+      "Each engagement is scoped to the outcome, not the feature list. We deliver what works — nothing more, nothing less.",
+      "The best solutions disappear into the workflow."
+    ]
+  },
+  "content": {
+    "tagline": "AI-Native Digital Solutions",
+    "value_propositions": [
+      "AI-native development from the ground up, not retrofitted onto legacy workflows",
+      "Proprietary product suite paired with dedicated development services",
+      "Automation-first systems delivering compounding operational efficiency",
+      "Complete solutions scoped to outcomes, not feature lists",
+      "Digital transformation strategy and advisory for Albanian businesses"
+    ],
+    "key_messages": [
+      "Solutions, not software — outcomes over feature lists",
+      "AI-native and automation-first from the ground up",
+      "Engineering Albania's digital future",
+      "Maximally efficient solutions through products and services"
+    ],
+    "pages": [
+      {
+        "path": "/",
+        "title": "Home (Hero)",
+        "purpose": "Landing page with WebGL shader animation, scroll-driven scene navigation, and hero messaging"
+      },
+      {
+        "path": "/#about",
+        "title": "About",
+        "purpose": "Company positioning — development company vs. software vendor, AI-native philosophy"
+      },
+      {
+        "path": "/#approach",
+        "title": "Approach — Products & Services",
+        "purpose": "Service offerings: Product Suite, Custom Development, Integration, Advisory"
+      },
+      {
+        "path": "/#work",
+        "title": "Work — Case Studies",
+        "purpose": "Three case studies: Public Sector, Financial Services, Logistics & Supply Chain"
+      },
+      {
+        "path": "/#contact",
+        "title": "Contact",
+        "purpose": "Contact information, location (Tirana, Albania), chatbot entry points for project briefs and inquiries"
+      },
+      {
+        "path": "/legal/privacy-policy",
+        "title": "Privacy Policy",
+        "purpose": "Data collection, usage, rights, cookies"
+      },
+      {
+        "path": "/legal/terms-of-service",
+        "title": "Terms of Service",
+        "purpose": "Acceptable use, IP, payments, liability"
+      },
+      {
+        "path": "/legal/gdpr-compliance",
+        "title": "GDPR Compliance",
+        "purpose": "Legal basis, data subject rights, DPA, breach notification"
+      },
+      {
+        "path": "/legal/security",
+        "title": "Security",
+        "purpose": "Infrastructure security, encryption, certifications, bug bounty"
+      }
+    ],
+    "features": [
+      { "name": "Product Suite", "description": "Proprietary AI-native tools for business automation" },
+      { "name": "Custom Development", "description": "Tailored business systems built AI-native from the ground up" },
+      { "name": "Integration", "description": "Automation and workflow design connecting existing systems" },
+      { "name": "Advisory", "description": "Digital transformation strategy and consulting" }
+    ],
+    "case_studies": [
+      {
+        "client": "Public Sector",
+        "service": "Product Suite + Integration",
+        "result": "Full digitization of citizen services. AI-driven document processing reduced handling times by 94%. Zero-paper operations within six months."
+      },
+      {
+        "client": "Financial Services",
+        "service": "Custom Development",
+        "result": "Automated compliance monitoring and transaction processing. End-to-end integration with national banking infrastructure. Manual review eliminated."
+      },
+      {
+        "client": "Logistics & Supply Chain",
+        "service": "Advisory + Product Suite",
+        "result": "AI-native fleet management and route optimization across the Western Balkans corridor. Operational costs reduced 31%. Delivery accuracy above 99.7%."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "SkylineEngine",
+      "path": "components/SkylineEngine.tsx",
+      "category": "feature",
+      "exportName": "SkylineEngine",
+      "props": {
+        "sceneNames": "string[]"
+      },
+      "remotionReady": false,
+      "note": "WebGL shader engine with scroll-driven animation, pagination state machine, HUD, and theme toggle. Entirely imperative — renders null."
+    },
+    {
+      "name": "LanguageToggle",
+      "path": "components/LanguageToggle.tsx",
+      "category": "ui",
+      "exportName": "LanguageToggle",
+      "props": {
+        "locale": "string"
+      },
+      "remotionReady": true
+    },
+    {
+      "name": "ChatBot",
+      "path": "components/ChatBot.tsx",
+      "category": "feature",
+      "exportName": "ChatBot",
+      "props": {
+        "dict": "ChatBotDict",
+        "locale": "string"
+      },
+      "remotionReady": false,
+      "note": "AI-powered chatbot with two flows (project brief, inquiry) using Vercel AI SDK and Gemini backend"
+    }
+  ],
+  "design_system": {
+    "color_philosophy": "Monotone grayscale only — no chromatic color anywhere in CSS or shader. Accent is white (dark theme) or near-black (light theme).",
+    "theme_modes": ["dark", "light"],
+    "theme_mechanism": "data-theme attribute on <html> toggles CSS variables; WebGL uBg uniform synced separately",
+    "typography_system": {
+      "display": "Bebas Neue 400 — uppercase, line-height 0.92, clamp-based responsive sizing",
+      "body": "DM Mono 300/400 — uppercase for UI, normal case for body-text, wide letter-spacing (0.08em–0.25em), sizes 0.55rem–0.78rem"
+    },
+    "layout": {
+      "breakpoint": "37.5em (600px)",
+      "ui_inset": "2rem",
+      "page_split": "50/50 split-screen — frosted glass content pane on one half, WebGL shape centered on the other"
+    },
+    "visual_effects": [
+      "WebGL raymarched SDF shapes (5 scenes: sphere, torus, box, octahedron, double-torus)",
+      "Scroll-driven shape morphing with velocity-damped easing",
+      "Frosted glass (backdrop-filter: blur 12px) on content panes",
+      "Staggered reveal animations on page open",
+      "Procedural shader textures: noise bands, edge pulse, brushed specular"
+    ]
+  },
+  "i18n": {
+    "default_locale": "sq",
+    "supported_locales": ["sq", "en"],
+    "locale_labels": { "sq": "Albanian", "en": "English" },
+    "mechanism": "next-intl-style async dictionary loader, middleware redirects based on Accept-Language"
+  },
+  "tech": {
+    "framework": "next.js",
+    "framework_version": "15",
+    "language": "typescript",
+    "styling": "css-variables",
+    "rendering": "static-generation",
+    "key_dependencies": [
+      "next",
+      "react",
+      "react-dom",
+      "ai",
+      "@ai-sdk/react",
+      "@ai-sdk/google"
+    ]
+  }
+}
