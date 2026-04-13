@@ -13,6 +13,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "."),
+      "../../solutions/[slug]/page": resolve(
+        __dirname,
+        "app/[locale]/solutions/[slug]/page.tsx"
+      ),
     },
   },
 });

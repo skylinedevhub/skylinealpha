@@ -141,6 +141,44 @@
     "security": "Siguria",
     "backToSite": "Kthehu në faqe"
   },
+  "solutions": {
+    "ocr-api": {
+      "tag": "OCR API Europë",
+      "title": "INTELIGJENCË\nDOKUMENTESH",
+      "body": "API e nivelit ndërmarrës për OCR dhe nxjerrje dokumentesh, ndërtuar për përputhshmërinë europiane.",
+      "features": [
+        { "name": "Përpunim PDF & Imazhesh", "desc": "Pranues dokumentesh shumë-formatësh" },
+        { "name": "Nxjerrje e Strukturuar", "desc": "Tabela, fusha dhe entitete" },
+        { "name": "Rezidencë të Dhënash në BE", "desc": "Përpunim në përputhje me GDPR" },
+        { "name": "Saktësi 99.2%", "desc": "Motor nxjerrjeje me bazë AI" }
+      ],
+      "cta": "Fillo ndërtimin"
+    },
+    "compliance-api": {
+      "tag": "API Përputhshmërie Europë",
+      "title": "PËRPUTHSHMËRI\nE AUTOMATIZUAR",
+      "body": "Automatizim përputhshmërie për fintech europian dhe industri të rregulluara. Verifikim KYC, kontroll AML dhe gjenerim gjurmësh auditimi.",
+      "features": [
+        { "name": "Verifikim KYC", "desc": "Kontrolle identiteti dhe dokumentesh" },
+        { "name": "Kontroll AML", "desc": "Lista sanksionesh dhe PEP" },
+        { "name": "Gjurmë Auditimi", "desc": "Regjistrime përputhshmërie të pandryshueshme" },
+        { "name": "Rregullore BE", "desc": "Gjithmonë aktuale me direktivat" }
+      ],
+      "cta": "Fillo ndërtimin"
+    },
+    "ai-infrastructure": {
+      "tag": "Infrastrukturë AI Ballkan",
+      "title": "INFRASTRUKTURË\nME BAZË AI",
+      "body": "Infrastrukturë e menaxhuar AI për ndërmarrjet ballkanike. Nga vendosja e modeleve te automatizimi i rrjedhës së punës.",
+      "features": [
+        { "name": "Vendosje Modelesh", "desc": "Llogaritje GPU me rezidencë në BE" },
+        { "name": "Automatizim Rrjedhe Pune", "desc": "Tubacione AI nga fillimi në fund" },
+        { "name": "Sovranitet të Dhënash", "desc": "Përputhshmëri rajonale e integruar" },
+        { "name": "Operacione të Menaxhuara", "desc": "Monitorim dhe shkallëzim 24/7" }
+      ],
+      "cta": "Fillo ndërtimin"
+    }
+  },
   "chatbot": {
     "buildCta": "Nd\u00ebrto faqen time",
     "inquiryCta": "B\u00ebj nj\u00eb pyetje",

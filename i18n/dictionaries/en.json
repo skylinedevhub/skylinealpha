@@ -141,6 +141,44 @@
     "security": "Security",
     "backToSite": "Back to site"
   },
+  "solutions": {
+    "ocr-api": {
+      "tag": "OCR API Europe",
+      "title": "DOCUMENT\nINTELLIGENCE",
+      "body": "Enterprise-grade OCR and document extraction API built for European compliance. Extract structured data from invoices, receipts, IDs, and government forms with AI-native accuracy.",
+      "features": [
+        { "name": "PDF & Image Processing", "desc": "Multi-format document ingestion" },
+        { "name": "Structured Extraction", "desc": "Tables, fields, and entities" },
+        { "name": "EU Data Residency", "desc": "GDPR-compliant processing" },
+        { "name": "99.2% Accuracy", "desc": "AI-native extraction engine" }
+      ],
+      "cta": "Start building"
+    },
+    "compliance-api": {
+      "tag": "Compliance API Europe",
+      "title": "AUTOMATED\nCOMPLIANCE",
+      "body": "Compliance automation for European fintech and regulated industries. KYC verification, AML screening, and audit trail generation.",
+      "features": [
+        { "name": "KYC Verification", "desc": "Identity and document checks" },
+        { "name": "AML Screening", "desc": "Sanctions and PEP lists" },
+        { "name": "Audit Trails", "desc": "Immutable compliance records" },
+        { "name": "EU Regulations", "desc": "Always current with directives" }
+      ],
+      "cta": "Start building"
+    },
+    "ai-infrastructure": {
+      "tag": "AI Infrastructure Balkans",
+      "title": "AI-NATIVE\nINFRASTRUCTURE",
+      "body": "Managed AI infrastructure for Balkan enterprises. From model deployment to workflow automation — purpose-built for regional compliance and data sovereignty.",
+      "features": [
+        { "name": "Model Deployment", "desc": "GPU compute with EU residency" },
+        { "name": "Workflow Automation", "desc": "End-to-end AI pipelines" },
+        { "name": "Data Sovereignty", "desc": "Regional compliance built in" },
+        { "name": "Managed Operations", "desc": "24/7 monitoring and scaling" }
+      ],
+      "cta": "Start building"
+    }
+  },
   "chatbot": {
     "buildCta": "Build my site",
     "inquiryCta": "Ask a question",
