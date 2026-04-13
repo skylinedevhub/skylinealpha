@@ -4,7 +4,7 @@ import { google } from "@ai-sdk/google";
 import { z } from "zod";
 
 interface LeadPayload {
-  flow: "build" | "inquiry";
+  flow: "build" | "inquiry" | "contact-form";
   messages: Array<{ role: string; content: string }>;
 }
 
@@ -150,7 +150,11 @@ export async function POST(req: Request) {
   }
 
   const flowLabel =
-    data.flow === "build" ? "Site Build Request" : "General Inquiry";
+    data.flow === "build"
+      ? "Site Build Request"
+      : data.flow === "contact-form"
+      ? "Contact Form Inquiry"
+      : "General Inquiry";
 
   const transcript = data.messages
     .map((m) => {
@@ -159,7 +163,11 @@ export async function POST(req: Request) {
     })
     .join("\n\n");
 
-  const brief = await extractBrief(data.flow, transcript);
+  // Contact form data is already structured — skip Gemini extraction
+  const brief =
+    data.flow === "contact-form"
+      ? null
+      : await extractBrief(data.flow, transcript);
   const body = formatEmail(data.flow, flowLabel, brief, transcript);
 
   const apiKey = process.env.RESEND_API_KEY;

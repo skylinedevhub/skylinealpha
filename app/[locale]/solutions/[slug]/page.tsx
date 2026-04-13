@@ -1,6 +1,7 @@
 import { getDictionary } from "@/i18n/getDictionary";
 import { locales, type Locale } from "@/i18n/config";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 const validSlugs = ["ocr-api", "compliance-api", "ai-infrastructure"] as const;
@@ -65,7 +66,7 @@ export default async function SolutionPage({
   return (
     <div className="legal-page">
       <nav className="legal-nav">
-        <a href={`/${locale}`}>&larr; {dict.footer.backToSite}</a>
+        <Link href={`/${locale}`}>&larr; {dict.footer.backToSite}</Link>
       </nav>
       <div className="legal-content">
         <div className="tag">{solution.tag}</div>
