@@ -74,13 +74,3 @@ describe("JSON-LD structured data", () => {
   });
 });
 
-describe("Issue #2 — Floating chatbot CTA", () => {
-  it("renders a floating CTA with data-chatbot-build outside of page overlays", async () => {
-    await renderHome();
-    const floatingCta = document.getElementById("floating-build-cta");
-    expect(floatingCta).toBeInTheDocument();
-    expect(floatingCta).toHaveAttribute("data-chatbot-build");
-    const pages = document.getElementById("pages");
-    expect(pages?.contains(floatingCta!)).toBe(false);
-  });
-});

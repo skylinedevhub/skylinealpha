@@ -270,7 +270,6 @@ void main() {
     const dots = document.querySelectorAll<HTMLElement>(".scene-dot");
     const scrollCardsEl = document.getElementById("scroll-cards")!;
     const scrollCards = document.querySelectorAll<HTMLElement>(".scroll-card");
-    const floatingCta = document.getElementById("floating-build-cta");
 
     const openPage = (index: number) => {
       if (activePage === index) {
@@ -283,7 +282,6 @@ void main() {
       targetOff = panDir[index] * halfW;
       pages.forEach((p, i) => p.classList.toggle("active", i === index));
       scrollCardsEl.classList.add("hidden");
-      floatingCta?.classList.add("hidden");
     };
 
     const closePage = () => {
@@ -291,7 +289,6 @@ void main() {
       targetOff = 0;
       pages.forEach((p) => p.classList.remove("active"));
       scrollCardsEl.classList.remove("hidden");
-      floatingCta?.classList.remove("hidden");
     };
 
     const dotClickHandlers: Array<() => void> = [];

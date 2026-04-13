@@ -116,15 +116,6 @@ export default async function Home({
 
       <div id="scroll-spacer" />
 
-      <button
-        id="floating-build-cta"
-        data-chatbot-build
-        type="button"
-        className="floating-cta"
-      >
-        {dict.floatingCta}
-      </button>
-
       <div id="scroll-cards" className="hidden">
         {dict.scrollCards.map(
           (

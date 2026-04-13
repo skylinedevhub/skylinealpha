@@ -13,7 +13,6 @@
   "scenes": ["ORIGJINA", "TORUS", "RRJETË", "PRIZËM", "SPIRALE"],
   "dots": ["Kryefaqja", "Rreth Nesh", "Qasja", "Punët", "Kontakti"],
   "themeToggle": "Ndrysho temën dritë/errësirë",
-  "floatingCta": "Ndërto faqen time — Falas",
   "scrollCards": [
     {
       "tag": "Skyline DevHub",

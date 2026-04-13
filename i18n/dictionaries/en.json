@@ -13,7 +13,6 @@
   "scenes": ["ORIGIN", "TORUS", "LATTICE", "PRISM", "HELIX"],
   "dots": ["Home", "About", "Approach", "Work", "Contact"],
   "themeToggle": "Toggle light/dark mode",
-  "floatingCta": "Build my site — Free",
   "scrollCards": [
     {
       "tag": "Skyline DevHub",
