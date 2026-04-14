@@ -21,6 +21,13 @@ Development company website — AI-native digital solutions for Albanian busines
 │ Visible during  │   │   Visible when       │   │   credit, footer   │
 │ scroll          │   │   page is opened     │   └────────────────────┘
 └─────────────────┘   └──────────────────────┘
+                                    │
+                    ┌──────────────────────────────────┐
+                    │      ChatBot overlay (z:20)      │
+                    │  AI chat (build / inquiry flows)  │
+                    │  Streams via /api/chat (Gemini)   │
+                    │  Submits leads via /api/lead      │
+                    └──────────────────────────────────┘
 ```
 
 ### Two independent control axes
@@ -41,11 +48,18 @@ Scroll never affects pagination. Pagination never affects scroll. Scrolling whil
 | `app/globals.css` | Full design system: tokens, layout, components, reveal animations, responsive breakpoint, legal page styles |
 | `components/SkylineEngine.tsx` | `'use client'` — WebGL shader + compilation, scroll/velocity system, pagination state machine, HUD, theme toggle. Runs entirely in `useEffect`, renders `null` |
 | `components/LanguageToggle.tsx` | `'use client'` — SQ/EN switcher using `next/link` |
+| `components/ChatBot.tsx` | `'use client'` — AI chatbot with two flows (build project brief / general inquiry). Uses `@ai-sdk/react` `useChat` with `DefaultChatTransport`. Streams via `/api/chat`, submits leads via `/api/lead` |
+| `components/CaseCarousel.tsx` | `'use client'` — Paginated case study carousel with arrow navigation, slide transitions, and result metrics display |
+| `app/api/chat/route.ts` | Chat streaming endpoint — Gemini 2.5 Flash via AI SDK `streamText`, two system prompts (build vs inquiry flow) |
+| `app/api/lead/route.ts` | Lead capture endpoint — extracts structured brief from transcript via Gemini `generateText` + Zod schema, emails via Resend API |
 | `i18n/dictionaries/sq.json` | Albanian translations (default language) |
 | `i18n/dictionaries/en.json` | English translations |
 | `i18n/config.ts` | Locale list and default locale |
 | `i18n/getDictionary.ts` | Async dictionary loader with TypeScript types |
 | `middleware.ts` | i18n routing: redirects `/` to `/{locale}` based on `Accept-Language` header |
+| `.marketing-ai/brand-manifest.json` | Brand identity manifest: colors, fonts, tone, components, pages, design system metadata |
+| `vitest.config.ts` | Test config: jsdom environment, React plugin, `@` path alias |
+| `app/[locale]/__tests__/page.test.tsx` | Page rendering tests: hero content, chatbot CTAs, nav structure, language toggle |
 
 ### Rendering model
 
@@ -79,7 +93,7 @@ All translatable text is in the JSON dictionaries. To change copy:
 Dictionary structure:
 ```
 meta.title / meta.description    — page <title> and meta description
-nav.about / approach / work / contact
+nav.about / approach / work / contact / buildCta
 scenes[]                         — HUD scene names (5 entries)
 dots[]                           — dot strip hover labels (5 entries)
 themeToggle                      — aria-label for theme button
@@ -87,6 +101,7 @@ scrollCards[0-4].tag/title/sub/cta
 pages.hero / about / approach / work / contact
 footer.privacy / terms / gdpr / security / backToSite
 credit
+chatbot.buildCta / inquiryCta / titleBuild / titleInquiry / close / submit / submitting / placeholder / buildGreeting / inquiryGreeting / success / error
 ```
 
 ## Legal Pages
@@ -225,23 +240,63 @@ Three procedural texture layers on all shapes:
 - **Dot strip** — 5 clickable dots, left edge, hover shows label via `::after`
 - **Top nav links** — About, Approach, Work, Contact
 - **CTA buttons** — in both scroll cards and page overlays
+- **Chatbot CTAs** — hero page "build" CTA and contact page "inquiry" CTA open the chatbot overlay
 - **Wordmark** — clicks to page 0
 - **Language toggle** — SQ / EN bordered buttons in nav
+
+## Chatbot & Lead Pipeline
+
+### Two chatbot flows
+
+| Flow | Trigger | System prompt | Purpose |
+|------|---------|---------------|---------|
+| `build` | Hero CTA, nav CTA | Project intake assistant | Gather project brief (name, business, site type, features, timeline, email) |
+| `inquiry` | Contact page CTA | Service Q&A assistant | Answer questions about Skyline DevHub's services |
+
+### Architecture
+
+```
+User ──► ChatBot.tsx (useChat) ──► /api/chat (streamText, Gemini 2.5 Flash)
+                │
+                └── Submit ──► /api/lead
+                                 ├── extractBrief() ── Gemini generateText + Zod schema
+                                 │   → structured YAML + JSON brief
+                                 └── Resend API ── email to LEAD_EMAIL
+```
+
+- **Streaming** — `@ai-sdk/react` `useChat` with `DefaultChatTransport`, streamed via `toUIMessageStreamResponse()`
+- **Structured extraction** — on submit, the full transcript is sent to Gemini which extracts a structured brief (client info, project details, summary) via a Zod schema
+- **Email delivery** — Resend API sends the brief + raw transcript. Falls back to `console.log` when `RESEND_API_KEY` is not set
+- **Environment variables** — `GOOGLE_GENERATIVE_AI_API_KEY` (required for chat), `RESEND_API_KEY` (optional), `RESEND_FROM` (optional), `LEAD_EMAIL` (defaults to `info@skylinedevelopmenthub.com`)
+
+### Case Studies Carousel
+
+The Work page uses `CaseCarousel.tsx` — a client-side paginated carousel rendering case studies with challenge/solution/results structure. Navigation via arrow buttons, counter shows `{current}/{total}`. Case data lives in the i18n dictionaries under `pages.work.cases[]`.
 
 ## Development
 
 ```bash
-npm run dev    # Next.js dev server on localhost:3000
-npm run build  # production build
-npm run start  # serve production build locally
+npm run dev      # Next.js dev server on localhost:3000
+npm run build    # production build
+npm run start    # serve production build locally
+npx vitest run   # run tests (4 tests, jsdom + React Testing Library)
+npm run test     # vitest in watch mode
 ```
+
+## Testing
+
+Vitest with jsdom environment and React Testing Library. Config in `vitest.config.ts`, setup in `vitest.setup.ts`.
+
+- Tests live alongside routes: `app/[locale]/__tests__/page.test.tsx`
+- `@` path alias resolves to project root (matches `tsconfig.json`)
+- `@testing-library/jest-dom` matchers available globally via setup file
 
 ## Deployment
 
 Next.js on Vercel. GitHub repo connected — pushes to `main` auto-deploy to production.
 
-- **Repo**: github.com/skyline-development-hub/skylinealpha
-- **Production URL**: skylinedevhub.vercel.app
+- **Repo**: github.com/skylinedevhub/skylinealpha
+- **Production URLs**: `skylinealpha.vercel.app`, `skylinedevelopmenthub.com`, `www.skylinedevelopmenthub.com`
 - **Framework**: Next.js (must be set in Vercel project settings)
 
 ## Conventions

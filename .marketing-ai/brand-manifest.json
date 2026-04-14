@@ -3,7 +3,7 @@
   "name": "Skyline DevHub",
   "url": "https://skylinedevelopmenthub.com",
   "repo": {
-    "owner": "skyline-development-hub",
+    "owner": "skylinedevhub",
     "repo": "skylinealpha",
     "branch": "main"
   },
@@ -182,6 +182,21 @@
       },
       "remotionReady": false,
       "note": "AI-powered chatbot with two flows (project brief, inquiry) using Vercel AI SDK and Gemini backend"
+    },
+    {
+      "name": "CaseCarousel",
+      "path": "components/CaseCarousel.tsx",
+      "category": "ui",
+      "exportName": "default",
+      "props": {
+        "cases": "CaseStudy[]",
+        "prevLabel": "string",
+        "nextLabel": "string",
+        "counterTemplate": "string",
+        "ctaLabel": "string"
+      },
+      "remotionReady": true,
+      "note": "Paginated case study carousel with arrow navigation, slide transitions, challenge/solution/results layout"
     }
   ],
   "design_system": {
