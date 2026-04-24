@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import { createElement } from "react";
 import { generateText, Output } from "ai";
 import { google } from "@ai-sdk/google";
+import { render } from "@react-email/render";
 import { z } from "zod";
+import { LeadEmail } from "@/lib/emails/LeadEmail";
 
 interface LeadPayload {
   flow: "build" | "inquiry" | "contact-form";
@@ -171,6 +174,34 @@ export async function POST(req: Request) {
       : await extractBrief(data.flow, transcript);
   const body = formatEmail(data.flow, flowLabel, brief, transcript);
 
+  // Flatten the nested Zod-extracted brief into the shape LeadEmail expects
+  const flatBrief = brief
+    ? {
+        name: brief.client.name ?? undefined,
+        email: brief.client.email ?? undefined,
+        business: brief.client.business_name ?? undefined,
+        siteType: brief.project.site_type ?? undefined,
+        features: brief.project.features,
+        timeline: brief.project.timeline ?? undefined,
+        summary: brief.summary,
+      }
+    : undefined;
+
+  const transcriptForEmail = data.messages
+    .filter((m): m is { role: "user" | "assistant"; content: string } =>
+      m.role === "user" || m.role === "assistant"
+    )
+    .map((m) => ({ role: m.role, content: m.content }));
+
+  const html = await render(
+    createElement(LeadEmail, {
+      flow: data.flow,
+      brief: flatBrief,
+      transcript: transcriptForEmail,
+      receivedAt: new Date().toUTCString(),
+    })
+  );
+
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.LEAD_EMAIL || "info@skylinedevelopmenthub.com";
 
@@ -185,6 +216,7 @@ export async function POST(req: Request) {
         from: `Skyline DevHub <${process.env.RESEND_FROM || "onboarding@resend.dev"}>`,
         to,
         subject: `[${flowLabel}] New chatbot lead`,
+        html,
         text: body,
       }),
     });
