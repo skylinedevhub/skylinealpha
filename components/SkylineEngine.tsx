@@ -299,6 +299,19 @@ void main() {
       d.addEventListener("click", handler);
     });
 
+    // On mobile the hero page overlay (data-page="0") is hidden via CSS,
+    // so openPage(0) is a no-op visually and leaves the user stuck on
+    // whatever scroll-card is underneath. Route the two real #p0 call
+    // sites to their intended destinations:
+    //   - scroll-card[0]'s "Learn more" → progress forward to about (#p1)
+    //   - contact page's "Back to start" / wordmark → reset to top so
+    //     scroll-card[0] becomes active naturally
+    const isMobile = () => window.matchMedia("(max-width: 37.5em)").matches;
+    const goToStart = () => {
+      closePage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     const linkClickHandlers: Array<{
       el: HTMLAnchorElement;
       handler: (e: Event) => void;
@@ -312,6 +325,14 @@ void main() {
             a.getAttribute("href")!.replace("#p", ""),
             10
           );
+          if (idx === 0 && isMobile()) {
+            if (a.closest("#scroll-cards")) {
+              openPage(1);
+            } else {
+              goToStart();
+            }
+            return;
+          }
           openPage(idx);
         };
         linkClickHandlers.push({ el: a, handler });
@@ -319,7 +340,10 @@ void main() {
       });
 
     const wordmark = document.querySelector<HTMLElement>(".nav-wordmark");
-    const wordmarkHandler = () => openPage(0);
+    const wordmarkHandler = () => {
+      if (isMobile()) goToStart();
+      else openPage(0);
+    };
     wordmark?.addEventListener("click", wordmarkHandler);
 
     const onTouchStart = () => closePage();
