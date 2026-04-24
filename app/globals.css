@@ -1263,3 +1263,30 @@ h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
   text-transform: uppercase;
   color: var(--accent);
 }
+
+/* ── state accent — the one chromatic escape hatch (step 7 / addendum §3) ── */
+/* Allowed ONLY on: [aria-invalid="true"], .form-error, .form-success,
+   and .chatbot-dots span. Code review enforces this. */
+
+[aria-invalid="true"] {
+  border-color: var(--state-accent);
+}
+
+.form-error {
+  color: var(--state-accent);
+  font-size: var(--type-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-block-start: 0.25rem;
+}
+
+.form-success {
+  color: var(--state-accent);
+  font-size: var(--type-ui);
+  letter-spacing: var(--tracking-ui);
+  text-transform: uppercase;
+}
+
+.chatbot-dots span {
+  background: var(--state-accent);
+}

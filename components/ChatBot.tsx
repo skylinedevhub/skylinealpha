@@ -136,13 +136,19 @@ function ChatPanel({
           </div>
         )}
         {status === "error" && (
-          <div className="chatbot-msg bot">{dict.error}</div>
+          <div className="chatbot-msg bot" role="alert">
+            <span className="form-error">{dict.error}</span>
+          </div>
         )}
         {submitStatus === "done" && (
-          <div className="chatbot-msg bot">{dict.success}</div>
+          <div className="chatbot-msg bot" role="status">
+            <span className="form-success">{dict.success}</span>
+          </div>
         )}
         {submitStatus === "error" && (
-          <div className="chatbot-msg bot">{dict.error}</div>
+          <div className="chatbot-msg bot" role="alert">
+            <span className="form-error">{dict.error}</span>
+          </div>
         )}
       </div>
 
