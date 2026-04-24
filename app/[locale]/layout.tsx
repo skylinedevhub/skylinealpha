@@ -40,6 +40,9 @@ export const metadata: Metadata = {
       en: "/en",
     },
   },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export function generateStaticParams() {

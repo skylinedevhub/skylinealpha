@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>Skyline DevHub</title>
+  <style>
+    .mark  { fill: #0d0d0d; }
+    .slash { fill: #666666; }
+    @media (prefers-color-scheme: dark) {
+      .mark  { fill: #e0e0e0; }
+      .slash { fill: #999999; }
+    }
+  </style>
+  <!-- S — tall, Bebas-inspired geometry as outlined paths (no font required) -->
+  <path class="mark"  d="M 5 5 H 19 V 9 H 9 V 15 H 19 V 27 H 5 V 23 H 15 V 19 H 5 Z"/>
+  <!-- slash — thin near-vertical diagonal, echoing the Wordmark separator -->
+  <path class="slash" d="M 24 3 L 26 3 L 22 29 L 20 29 Z"/>
+</svg>

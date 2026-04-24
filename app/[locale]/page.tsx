@@ -7,6 +7,7 @@ import LanguageToggle from "@/components/LanguageToggle";
 import ChatBot from "@/components/ChatBot";
 import CaseCarousel from "@/components/CaseCarousel";
 import ContactForm from "@/components/ContactForm";
+import { Wordmark } from "@/components/brand/Wordmark";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -56,7 +57,7 @@ export default async function Home({
       <canvas id="webgl-canvas" />
 
       <nav id="top-nav">
-        <div className="nav-wordmark">Skyline DevHub</div>
+        <div className="nav-wordmark"><Wordmark /></div>
         <div className="nav-links">
           <a href="#p1" className="nav-link">
             {dict.nav.about}
