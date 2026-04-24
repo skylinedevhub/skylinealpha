@@ -346,7 +346,16 @@ void main() {
     };
     wordmark?.addEventListener("click", wordmarkHandler);
 
-    const onTouchStart = () => closePage();
+    // Desktop: any scroll input (wheel + touch-drag) closes an open page
+    // so the scroll-scene narrative resumes. Mobile doesn't use this — text
+    // cards scroll internally (overflow-y: auto), and a window-level
+    // touchstart closing the page on every tap broke (a) the text-card's
+    // own scroll, and (b) CTA navigation (touchstart fires before click,
+    // closing the page before the destination opens).
+    const onTouchStart = () => {
+      if (isMobile()) return;
+      closePage();
+    };
     window.addEventListener("touchstart", onTouchStart, { passive: true });
 
     /* ── HUD ── */
