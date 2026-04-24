@@ -314,3 +314,131 @@ Next.js on Vercel. GitHub repo connected — pushes to `main` auto-deploy to pro
 - **Fonts via next/font** — never use `@import` or `<link>` for Google Fonts
 - **All UI text** — DM Mono, uppercase, wide letter-spacing
 - **All display text** — Bebas Neue, tight line-height (0.92)
+# Skyline DevHub — Design System Addendum
+
+> Append this to `CLAUDE.md` in the `skylinealpha` repo. It encodes the
+> design-language rules extracted from the April 2026 identity audit.
+> Any agent (Claude Code, Cowork, this chat) working in the repo must obey these rules.
+
+## 0. Non-negotiable visual rules
+
+These have been true since the site launched. Enumerating them so agents cannot drift:
+
+- **Monotone grayscale only.** Never introduce chromatic color in CSS, SVG, or shader — with the single exception of `--state-accent` (see §3).
+- **Two typefaces only.** Bebas Neue (display) and DM Mono (everything else). Loaded via `next/font` in `app/[locale]/layout.tsx`. Never add Google Fonts via `<link>` or `@import`.
+- **Hairline borders only.** All borders use `var(--hair)` (`0.0625rem` / 1px). No `2px`, no thicker dividers.
+- **Uppercase + wide tracking for all UI.** Body-text paragraphs are the only exception.
+- **All display text.** Bebas Neue, `line-height: 0.92`, `letter-spacing: 0.02–0.04em`.
+- **Split-screen panes.** Content pane 50% width, WebGL shape centered in the opposite half. One breakpoint: `37.5em` (600px).
+
+## 1. Tokens are the source of truth
+
+The full token set lives in `app/globals.css` under `:root` / `:root[data-theme="light"]`.
+They are **also** exported as `@skyline/tokens` in `lib/tokens/` — both forms must stay in sync.
+
+When editing tokens:
+
+1. Edit `lib/tokens/tokens.ts` first.
+2. Run `npm run tokens:build` — regenerates `app/globals.css` token block and `lib/tokens/tokens.css`.
+3. Commit both files together. Never hand-edit the generated blocks.
+
+Token categories:
+
+- **Color** · `--bg --fg --muted --accent --card-bg --card-border`
+- **Type** · `--type-display-xl --type-display-lg --type-tag --type-ui --type-body --tracking-wide --tracking-ui --tracking-tag`
+- **Space** · `--hair --ui-inset --pane-pad-x --pane-pad-y`
+- **Motion** · `--ease-skyline --reveal-duration --stagger-1 … --stagger-5`
+- **State** · `--state-accent` (see §3)
+
+## 2. Type scale
+
+| Token | Size | Line | Tracking | Use |
+|---|---|---|---|---|
+| `--type-display-xl` | `clamp(3rem, 8vw, 6.5rem)` | 0.92 | 0.03em | `h1` |
+| `--type-display-lg` | `clamp(2.2rem, 6vw, 5rem)` | 0.92 | 0.03em | `h2` |
+| `--type-display-md` | `clamp(1.4rem, 2.5vw, 2rem)` | 0.92 | 0.03em | stat-num, case metric |
+| `--type-tag` | `0.6rem` | 1.4 | 0.25em | `.tag`, section eyebrows |
+| `--type-ui` | `0.62rem` | 1.4 | 0.18em | `.cta`, nav, buttons |
+| `--type-body` | `0.78rem` | 1.8 | 0.04em | `.body-text` |
+| `--type-micro` | `0.55rem` | 1.4 | 0.15em | lang toggle, credit, HUD |
+
+## 3. The state accent — strict escape hatch
+
+Monotone is the rule. One semantic accent is permitted: `--state-accent: oklch(78% 0.14 45)` (warm desaturated amber).
+
+**Allowed uses only:**
+- Inline form validation (error text + border)
+- Lead submission success state
+- Chatbot "typing" dot pulse
+- `aria-invalid` / `aria-live="polite"` visual treatment
+
+**Never for:** decoration, hover states, CTAs, headings, dividers, iconography.
+
+If an agent proposes using `--state-accent` anywhere else, reject.
+
+## 4. Motion
+
+One easing, one duration scale:
+
+```css
+--ease-skyline: cubic-bezier(.2, .7, .1, 1);
+--reveal-duration: 0.5s;
+--stagger-1: 0s;     /* .tag */
+--stagger-2: 0.06s;  /* h1, h2 */
+--stagger-3: 0.14s;  /* .body-text */
+--stagger-4: 0.22s;  /* lists, grids */
+--stagger-5: 0.26s;  /* .stat-row */
+--stagger-6: 0.32s;  /* .cta */
+```
+
+Every animation — reveals, chatbot panel, case slide, contact form submit — uses `--ease-skyline`. Do not introduce new bezier curves.
+
+## 5. i18n contract — legal pages are not exempt
+
+The site honors `sq` (default) and `en`. Legal pages (`app/[locale]/legal/*`) **must** be bilingual. If any legal copy is added or edited:
+
+1. Update `i18n/dictionaries/legal/{sq,en}.json`.
+2. Page components read from the dictionary — never hardcode legal strings in JSX.
+3. Both dictionaries must have identical key structure (enforced by `npm test`).
+
+## 6. Case-study proof on the Work page
+
+The Work page carousel must render a visual preview for each case (currently: TrustGuard, CRA T3010, Shtëpi·AL).
+
+- Preview is either a live scaled iframe (`transform: scale(0.4)`, pointer-events disabled) or a pre-rendered screenshot at 1600×1000.
+- Screenshots are stored in `public/cases/{slug}.png` and referenced from the dictionary via `cases[i].preview`.
+- The preview frame uses `var(--hair) solid var(--card-border)` and sits above the challenge/solution/results text.
+
+## 7. OG imagery — the scenes are the identity
+
+Every page ships an OG image rendered from one of the five SDF scenes:
+
+| Route | Scene | File |
+|---|---|---|
+| `/` (hero) | ORIGIN | `public/og/origin.png` |
+| `#about` | TORUS | `public/og/torus.png` |
+| `#approach` | LATTICE | `public/og/lattice.png` |
+| `#work` | PRISM | `public/og/prism.png` |
+| `#contact` | HELIX | `public/og/helix.png` |
+
+Render at 2400×1260 via the offline shader capture script in `scripts/render-og.mjs`.
+
+## 8. The wordmark is SVG, not live type
+
+"Skyline DevHub" as the nav wordmark is rendered from `components/brand/Wordmark.tsx` (SVG) — not inline text in Bebas Neue. Same for the `S/` monogram used in favicons and email templates.
+
+Typesetting in the SVG matches the Bebas Neue specimen exactly; never rasterize to PNG except for email clients.
+
+## 9. Email template parity
+
+Lead emails sent via Resend use `lib/emails/LeadEmail.tsx` (react-email). The template:
+
+- Loads DM Mono + Bebas Neue via Google Fonts `<link>` (email clients can't use next/font)
+- Monotone, hairline table borders, S/ monogram at top
+- Footer: "Skyline DevHub — Tirana, Albania"
+
+When lead schema changes, update both `app/api/lead/route.ts` and `lib/emails/LeadEmail.tsx`.
+
+## 10. When in doubt
+
+Consult `docs/design-system.md` for the full specimen with examples. If `docs/design-system.md` and this addendum disagree, **this addendum wins** — it's the normative source.
