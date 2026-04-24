@@ -29,7 +29,13 @@ export const colors = {
   },
 } as const;
 
-export const type = {
+// Named `typography` (not `type`) because `import { type X }` is TS's
+// type-only-import syntax. Node 24's native .ts stripper parses a bare
+// `type` inside `import { ... }` as that modifier, corrupting the whole
+// destructured import and producing "does not provide an export named …"
+// on every other name in the list. Locally Node 20 → tsx → esbuild
+// tolerates it, so the issue only surfaces on Vercel's Node 24.
+export const typography = {
   displayXl: {
     size: "clamp(3rem, 8vw, 6.5rem)",
     lineHeight: "0.92",

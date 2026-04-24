@@ -9,7 +9,7 @@
  */
 
 import { writeFileSync } from "node:fs";
-import { colors, type, space, motion } from "../lib/tokens/tokens.ts";
+import { colors, typography, space, motion } from "../lib/tokens/tokens.ts";
 
 const css = `/* GENERATED — do not hand-edit. Run: npm run tokens:build */
 
@@ -26,13 +26,13 @@ const css = `/* GENERATED — do not hand-edit. Run: npm run tokens:build */
   --state-accent: ${colors.state.accent};
 
   /* type */
-  --type-display-xl: ${type.displayXl.size};
-  --type-display-lg: ${type.displayLg.size};
-  --type-display-md: ${type.displayMd.size};
-  --type-tag: ${type.tag.size};
-  --type-ui: ${type.ui.size};
-  --type-body: ${type.body.size};
-  --type-micro: ${type.micro.size};
+  --type-display-xl: ${typography.displayXl.size};
+  --type-display-lg: ${typography.displayLg.size};
+  --type-display-md: ${typography.displayMd.size};
+  --type-tag: ${typography.tag.size};
+  --type-ui: ${typography.ui.size};
+  --type-body: ${typography.body.size};
+  --type-micro: ${typography.micro.size};
 
   --tracking-display: 0.03em;
   --tracking-tag: 0.25em;
