@@ -227,7 +227,7 @@ Three procedural texture layers on all shapes:
 
 ### Scroll
 - `#scroll-spacer` provides 500vh of scroll height
-- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, plus/minus 600 cap)
+- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, plus/minus 600 cap) — **desktop only**; mobile uses native touch scrolling and no wheel listener is registered
 - `smooth` chases `tgt` via exponential easing (`1 - exp(-dt * 8)`)
 - Scroll cards swap based on current scene index in the frame loop
 
@@ -236,7 +236,7 @@ Three procedural texture layers on all shapes:
 - `closePage()` — resets offset to 0, removes `.active`, shows scroll cards
 - `smoothOff` chases `targetOff` via exponential easing (`1 - exp(-dt * 5)`)
 - Clicking same page again closes it (toggle behavior)
-- Any scroll input (wheel) calls `closePage()`
+- **Desktop only:** any scroll input (wheel) and any window-level `touchstart` calls `closePage()`. Mobile does not register either listener — page transitions are entirely CTA-driven, and on `#p0` the hero CTAs route to `openPage(1)` / `goToStart()` instead of toggling the hero overlay (see `SkylineEngine.tsx`).
 
 ### Navigation entry points
 - **Dot strip** — 5 clickable dots, left edge, hover shows label via `::after`
@@ -306,6 +306,7 @@ Next.js on Vercel. GitHub repo connected — pushes to `main` auto-deploy to pro
 - **Next.js App Router** — React server components by default, `'use client'` only where needed
 - **Monotone grayscale only** — never introduce chromatic color in CSS or shader
 - **Two-axis independence** — scroll and pagination must never affect each other
+- **Scroll-cards hit-testing** — `.scroll-card.active` receives `pointer-events: auto` *only* via `#scroll-cards:not(.hidden) .scroll-card.active`. Never give an active card unconditional `pointer-events: auto`; a child override punches an invisible clickable hole at z:3 over the page overlay at z:2, stealing taps from hero/page CTAs on real touch devices (DevTools mobile masks this; real Pixel does not)
 - **Theme sync** — any CSS theme change must also update the WebGL `uBg` uniform
 - **Shader effects are additive** — each texture layer adds to `col`, never multiplies or replaces
 - **Split-screen panes** — content pane takes 50% width, shape centered in opposite half (panDir: `[0, -1, 1, -1, 1]`)

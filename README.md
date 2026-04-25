@@ -296,7 +296,7 @@ Three procedural texture layers on all shapes:
 ### Scroll
 
 - `#scroll-spacer` provides 500vh of scroll height
-- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, capped at +/-600)
+- Custom wheel handler with velocity damping (`0.85^(dt*60)` decay, capped at +/-600) — **desktop only**; mobile uses native touch scrolling and registers no wheel listener
 - `smooth` chases `tgt` via exponential easing (`1 - exp(-dt * 8)`)
 - Scroll cards swap based on current scene index each frame
 
@@ -306,7 +306,7 @@ Three procedural texture layers on all shapes:
 - `closePage()` — resets offset, removes `.active`, shows scroll cards
 - `smoothOff` chases `targetOff` via exponential easing (`1 - exp(-dt * 5)`)
 - Clicking the same page again closes it (toggle)
-- Any scroll/wheel input closes the open page
+- **Desktop only:** scroll/wheel and window-level `touchstart` close the open page. Mobile does not register these listeners — page transitions are CTA-driven; on `#p0`, hero CTAs route to `openPage(1)` / `goToStart()` instead of toggling the hero overlay
 
 ### Navigation entry points
 
@@ -461,6 +461,7 @@ Next.js on **Vercel**. GitHub repo connected — pushes to `main` auto-deploy to
 - **Next.js App Router** — React server components by default, `'use client'` only where needed
 - **Monotone grayscale only** — never introduce chromatic color in CSS or shader
 - **Two-axis independence** — scroll and pagination must never affect each other
+- **Scroll-cards hit-testing** — `.scroll-card.active` only gets `pointer-events: auto` via the scoped rule `#scroll-cards:not(.hidden) .scroll-card.active`; never grant an active card unconditional `pointer-events: auto` (a child override punches an invisible clickable hole at z:3 over the page overlay at z:2 and steals taps from real touch devices)
 - **Theme sync** — any CSS theme change must also update the WebGL `uBg` uniform
 - **Shader effects are additive** — each texture layer adds to `col`, never multiplies or replaces
 - **Split-screen panes** — content pane takes 50% width, shape centered in opposite half
